@@ -26,25 +26,6 @@ export default function VotingGrid({ category }: VotingGridProps) {
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
   const [selectedRank, setSelectedRank] = useState<number | undefined>(undefined);
 
-  const isQueen = category === 'queen';
-  
-  // Theme colors
-  const theme = isQueen ? {
-    accent: 'pink',
-    spinnerBorder: 'border-pink-500/30',
-    spinnerTop: 'border-t-pink-400',
-    textMuted: 'text-pink-200/60',
-    cardBg: 'bg-[#1a0a0a]',
-    cardBorder: 'border-pink-500/20',
-  } : {
-    accent: 'cyan',
-    spinnerBorder: 'border-cyan-500/30',
-    spinnerTop: 'border-t-cyan-400',
-    textMuted: 'text-cyan-200/60',
-    cardBg: 'bg-[#0a0a1a]',
-    cardBorder: 'border-cyan-500/20',
-  };
-
   const fetchCandidates = useCallback(async () => {
     try {
       const response = await fetch(`/api/admin/candidates?category=${category}`, { cache: 'no-store' });
@@ -91,7 +72,6 @@ export default function VotingGrid({ category }: VotingGridProps) {
   }, [fetchCandidates, fetchVotingStatus]);
 
   const handleVote = (candidateId: string) => {
-    // Save to localStorage
     const storageKey = `voted_${category}`;
     localStorage.setItem(storageKey, candidateId);
     setVotedCandidateId(candidateId);
@@ -118,8 +98,8 @@ export default function VotingGrid({ category }: VotingGridProps) {
     return (
       <div className="flex items-center justify-center py-16">
         <div className="flex flex-col items-center gap-4">
-          <div className={`w-12 h-12 border-4 ${theme.spinnerBorder} ${theme.spinnerTop} rounded-full animate-spin`} />
-          <p className={theme.textMuted}>Đang tải ứng viên...</p>
+          <div className="w-12 h-12 border-4 border-[#FFB353]/30 border-t-[#FFB353] rounded-full animate-spin" />
+          <p className="text-white/60">Đang tải ứng viên...</p>
         </div>
       </div>
     );
@@ -139,10 +119,10 @@ export default function VotingGrid({ category }: VotingGridProps) {
 
   if (candidates.length === 0) {
     return (
-      <Card className={`p-8 text-center rounded-2xl ${theme.cardBg} ${theme.cardBorder}`}>
+      <Card className="p-8 text-center rounded-2xl bg-[#132842] border-[#FFB353]/20">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className={`w-10 h-10 ${isQueen ? 'text-pink-400' : 'text-cyan-400'} animate-pulse`} />
-          <p className={theme.textMuted}>Chưa có ứng viên nào.</p>
+          <Loader2 className="w-10 h-10 text-[#FFB353] animate-pulse" />
+          <p className="text-white/60">Chưa có ứng viên nào.</p>
         </div>
       </Card>
     );

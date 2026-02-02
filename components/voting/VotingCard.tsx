@@ -73,49 +73,24 @@ export default function VotingCard({
     }
   };
 
-  const isQueen = candidate.category === 'queen';
   const canVote = !hasVoted && !hasVotedInCategory && !voting && !isVoting;
-  
-  // If user has voted for someone else, show disabled state
   const isDisabled = hasVotedInCategory && !hasVoted;
-
-  // Theme colors based on category
-  const themeColors = isQueen ? {
-    cardBg: 'bg-gradient-to-b from-[#1a0a0a] to-[#2d0a0a]',
-    cardBorder: hasVoted ? 'border-green-400 ring-2 ring-green-400/30' : 'border-pink-500/20 hover:border-pink-500/40',
-    shadow: 'hover:shadow-pink-500/20',
-    accent: 'text-pink-400',
-    accentFill: 'text-pink-400 fill-pink-400',
-    buttonBg: 'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 shadow-pink-500/30',
-    infoBg: 'bg-[#1a0a0a]/80',
-    votesBg: 'bg-pink-500/10',
-  } : {
-    cardBg: 'bg-gradient-to-b from-[#0a0a1a] to-[#0a0a2d]',
-    cardBorder: hasVoted ? 'border-green-400 ring-2 ring-green-400/30' : 'border-cyan-500/20 hover:border-cyan-500/40',
-    shadow: 'hover:shadow-cyan-500/20',
-    accent: 'text-cyan-400',
-    accentFill: 'text-cyan-400 fill-cyan-400',
-    buttonBg: 'bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 shadow-cyan-500/30',
-    infoBg: 'bg-[#0a0a1a]/80',
-    votesBg: 'bg-cyan-500/10',
-  };
 
   return (
     <div 
-      className={`group relative overflow-hidden rounded-2xl ${themeColors.cardBg} shadow-lg border-2 transition-all duration-300 
-        ${themeColors.cardBorder} 
-        ${isDisabled ? 'opacity-50 grayscale' : `hover:shadow-xl ${themeColors.shadow} hover:-translate-y-1`}
+      className={`group relative overflow-hidden rounded-2xl bg-[#132842] shadow-lg border-2 transition-all duration-300 
+        ${hasVoted ? 'border-green-400 ring-2 ring-green-400/30' : 'border-[#FFB353]/20 hover:border-[#FFB353]/50'} 
+        ${isDisabled ? 'opacity-50 grayscale' : 'hover:shadow-xl hover:-translate-y-1'}
       `}
     >
       {/* Rank Badge */}
       {rank && rank <= 3 && (
         <div className={`absolute top-3 left-3 z-20 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shadow-lg ${
-          rank === 1 ? 'bg-gradient-to-br from-yellow-400 to-amber-500 text-amber-900' :
+          rank === 1 ? 'bg-gradient-to-br from-[#FFB353] to-[#FF8C00] text-[#1A3553]' :
           rank === 2 ? 'bg-gradient-to-br from-gray-300 to-gray-400 text-gray-800' :
           'bg-gradient-to-br from-amber-600 to-amber-700 text-white'
         }`}>
-          {rank === 1 && <Trophy className="w-5 h-5" />}
-          {rank !== 1 && rank}
+          {rank === 1 ? <Trophy className="w-5 h-5" /> : rank}
         </div>
       )}
 
@@ -148,20 +123,20 @@ export default function VotingCard({
         </div>
         
         {/* Gradient overlay at bottom */}
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#132842] to-transparent" />
         
         {/* Vote count on image */}
         <div className="absolute bottom-3 left-3 z-10">
-          <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${themeColors.votesBg} backdrop-blur-sm border ${isQueen ? 'border-pink-500/30' : 'border-cyan-500/30'}`}>
-            <Heart className={`w-4 h-4 ${themeColors.accentFill}`} />
-            <span className={`font-bold text-sm ${themeColors.accent}`}>{localVotes.toLocaleString()}</span>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFB353]/20 backdrop-blur-sm border border-[#FFB353]/30">
+            <Heart className="w-4 h-4 text-[#FFB353] fill-[#FFB353]" />
+            <span className="font-bold text-sm text-[#FFB353]">{localVotes.toLocaleString()}</span>
             <span className="text-white/60 text-xs">votes</span>
           </div>
         </div>
       </div>
 
       {/* Info section */}
-      <div className={`p-4 ${themeColors.infoBg}`}>
+      <div className="p-4 bg-[#132842]">
         <h3 className="font-bold text-white text-base sm:text-lg mb-3 line-clamp-2">{candidate.name}</h3>
         
         {/* Vote button - Full width */}
@@ -169,10 +144,10 @@ export default function VotingCard({
           <button
             onClick={handleVote}
             disabled={!canVote}
-            className={`w-full px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 active:scale-95 ${themeColors.buttonBg} text-white shadow-lg flex items-center justify-center gap-2`}
+            className="w-full px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 active:scale-95 bg-gradient-to-r from-[#FFB353] to-[#FF8C00] hover:from-[#FFC77D] hover:to-[#FFB353] text-[#1A3553] shadow-lg flex items-center justify-center gap-2"
           >
             {isVoting ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#1A3553]/30 border-t-[#1A3553] rounded-full animate-spin" />
             ) : (
               <>
                 <Heart className="w-5 h-5" />
