@@ -106,25 +106,25 @@ export default function KingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative h-[50vh] sm:h-[55vh] flex items-center justify-center overflow-hidden pt-16">
+      <section className="relative min-h-[60vh] sm:min-h-[50vh] flex items-center justify-center overflow-hidden">
         {/* Backdrop Image */}
         <div className="absolute inset-0">
           <Image 
             src="/backdrop.jpg"
             alt="Year End Party 2026"
             fill
-            className="object-cover"
+            className="object-cover object-center"
             priority
           />
-          <div className="absolute inset-0 bg-[#1A3553]/60" />
+          <div className="absolute inset-0 bg-[#1A3553]/50" />
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 drop-shadow-2xl transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="relative z-10 text-center px-4 w-full max-w-4xl mx-auto pt-20 pb-8">
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 drop-shadow-2xl transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className="text-white">VOTE FOR </span>
             <span className="bg-gradient-to-r from-[#FFB353] to-[#FF8C00] bg-clip-text text-transparent">KING</span>
           </h1>
-          <p className={`text-lg sm:text-xl text-white/90 font-medium drop-shadow-lg transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <p className={`text-base sm:text-lg md:text-xl text-white/90 font-medium drop-shadow-lg transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             GreenYellow Year End Party 2026
           </p>
         </div>

@@ -140,7 +140,7 @@ export default function VotingGrid({ category }: VotingGridProps) {
             className="flex items-center gap-2 px-4 py-2 text-sm bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl border border-red-500/30 transition-all hover:scale-105"
           >
             <Trash2 className="w-4 h-4" />
-            Xóa lựa chọn (Test)
+            Xóa lựa chọn 
           </button>
         </div>
       )}
