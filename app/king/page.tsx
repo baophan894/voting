@@ -106,7 +106,7 @@ export default function KingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] sm:min-h-[50vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[60vh] sm:min-h-[50vh] flex items-center justify-center overflow-hidden mt-16">
         {/* Backdrop Image */}
         <div className="absolute inset-0">
           <Image 
@@ -116,17 +116,39 @@ export default function KingPage() {
             className="object-cover object-center"
             priority
           />
-          <div className="absolute inset-0 bg-[#1A3553]/50" />
+          {/* Sophisticated Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1A3553]/60 via-[#1A3553]/55 to-[#132842]/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A3553]/40 via-transparent to-[#1A3553]/40" />
         </div>
 
-        <div className="relative z-10 text-center px-4 w-full max-w-4xl mx-auto pt-20 pb-8">
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-3 drop-shadow-2xl transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="text-white">VOTE FOR </span>
-            <span className="bg-gradient-to-r from-[#FFB353] to-[#FF8C00] bg-clip-text text-transparent">KING</span>
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFB353]/5 rounded-full blur-3xl -mr-48 -mt-48" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FF8C00]/5 rounded-full blur-3xl -ml-40 -mb-40" />
+
+        <div className="relative z-10 text-center px-4 w-full max-w-4xl mx-auto py-16 sm:py-20">
+          {/* Badge */}
+          <div className={`inline-flex items-center gap-2 px-4 py-2 bg-[#FFB353]/15 border border-[#FFB353]/40 rounded-full mb-8 backdrop-blur-sm transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="w-2 h-2 bg-[#FFB353] rounded-full animate-pulse" />
+            <span className="text-[#FFB353] font-semibold text-xs sm:text-sm">YEAR END CELEBRATION</span>
+          </div>
+
+          {/* Main Heading */}
+          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="text-white block mb-2">VOTE FOR</span>
+            <span className="bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00] bg-clip-text text-transparent drop-shadow-lg">YOUR KING</span>
           </h1>
-          <p className={`text-base sm:text-lg md:text-xl text-white/90 font-medium drop-shadow-lg transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+
+          {/* Subtitle */}
+          <p className={`text-base sm:text-lg md:text-xl text-white/85 font-medium mb-8 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             GreenYellow Year End Party 2026
           </p>
+
+          {/* Date */}
+          <div className={`flex items-center justify-center gap-2 text-[#FFB353]/90 font-semibold text-sm sm:text-base transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="w-1 h-1 bg-[#FFB353] rounded-full" />
+            <span>FEBRUARY 6TH, 2026</span>
+            <div className="w-1 h-1 bg-[#FFB353] rounded-full" />
+          </div>
         </div>
       </section>
 

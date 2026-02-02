@@ -1,8 +1,18 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Crown, Trophy, ChevronDown, Heart, Sparkles, Star } from 'lucide-react';
 
 export default function HomePage() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#0a1628] text-white">
       {/* Hero Section with backdrop */}
@@ -78,7 +88,9 @@ export default function HomePage() {
         </nav>
 
         {/* Hero Content */}
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 py-12">
+        <div className={`relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 py-12 transition-all duration-1000 ${
+          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full mb-6">
             <Sparkles className="w-4 h-4 text-cyan-400" />
             <span className="text-cyan-300 font-medium text-sm">Mã đáo Thành công 2026</span>
@@ -143,7 +155,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Queen Card */}
             <Link href="/queen" className="group">
-              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] border-2 border-pink-500/20 p-8 transition-all duration-500 hover:border-pink-400/50 hover:shadow-2xl hover:shadow-pink-500/20 hover:-translate-y-2">
+              <div className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] border-2 border-pink-500/20 p-8 transition-all duration-700 hover:border-pink-400/50 hover:shadow-2xl hover:shadow-pink-500/20 hover:-translate-y-2 ${
+                mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`} style={{ transitionDelay: '200ms' }}>
+            
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-pink-500/10 to-transparent rounded-bl-full" />
                 <div className="relative z-10">
                   <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-500/30">
@@ -167,7 +182,10 @@ export default function HomePage() {
 
             {/* King Card */}
             <Link href="/king" className="group">
-              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] border-2 border-cyan-500/20 p-8 transition-all duration-500 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/20 hover:-translate-y-2">
+              <div className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] border-2 border-cyan-500/20 p-8 transition-all duration-700 hover:border-cyan-400/50 hover:shadow-2xl hover:shadow-cyan-500/20 hover:-translate-y-2 ${
+                mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`} style={{ transitionDelay: '400ms' }}>
+            
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-cyan-500/10 to-transparent rounded-bl-full" />
                 <div className="relative z-10">
                   <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/30">
@@ -210,7 +228,9 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-8 bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] rounded-2xl border border-cyan-500/20">
+            <div className={`text-center p-8 bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] rounded-2xl border border-cyan-500/20 transition-all duration-700 ${
+              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '300ms' }}>
               <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-lg shadow-cyan-500/30">
                 1
               </div>
@@ -218,7 +238,9 @@ export default function HomePage() {
               <p className="text-cyan-200/60 text-sm">Chọn Queen hoặc King để bắt đầu bình chọn</p>
             </div>
 
-            <div className="text-center p-8 bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] rounded-2xl border border-pink-500/20">
+            <div className={`text-center p-8 bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] rounded-2xl border border-pink-500/20 transition-all duration-700 ${
+              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '500ms' }}>
               <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-lg shadow-pink-500/30">
                 2
               </div>
@@ -226,7 +248,9 @@ export default function HomePage() {
               <p className="text-cyan-200/60 text-sm">Click vào nút Vote để bình chọn cho ứng viên yêu thích</p>
             </div>
 
-            <div className="text-center p-8 bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] rounded-2xl border border-yellow-500/20">
+            <div className={`text-center p-8 bg-gradient-to-br from-[#1a2d4d] to-[#0d1f3c] rounded-2xl border border-yellow-500/20 transition-all duration-700 ${
+              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '700ms' }}>
               <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-2xl flex items-center justify-center text-xl font-bold text-white shadow-lg shadow-yellow-500/30">
                 3
               </div>
