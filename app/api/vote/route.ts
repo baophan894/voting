@@ -27,19 +27,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Voting is currently closed for this category' }, { status: 403 });
     }
 
-    // Create vote record (no IP-based duplicate check - using localStorage instead)
-    await Vote.create({
-      candidateId,
-      ipAddress,
-      category,
-    });
-
-    // Increment candidate vote count
+    // Increment candidate vote count first
     const candidate = await Candidate.findByIdAndUpdate(
       candidateId,
       { $inc: { votes: 1 } },
       { new: true }
     );
+
+    // Record vote for analytics (browser check via localStorage, not IP)
+    Vote.create({
+      candidateId,
+      ipAddress,
+      category,
+    }).catch(err => console.log('Vote record error (non-critical):', err));
 
     return NextResponse.json({
       success: true,

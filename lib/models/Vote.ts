@@ -28,7 +28,8 @@ const VoteSchema = new Schema<IVote>(
   { timestamps: true }
 );
 
-// Create index for vote tracking (one vote per IP per candidate)
-VoteSchema.index({ candidateId: 1, ipAddress: 1 }, { unique: true });
+// Index for faster queries only (no uniqueness constraint)
+VoteSchema.index({ candidateId: 1 });
+VoteSchema.index({ category: 1 });
 
 export default mongoose.models.Vote || mongoose.model<IVote>('Vote', VoteSchema);

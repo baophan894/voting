@@ -137,7 +137,7 @@ export default function VotingCard({
 
       {/* Info section */}
       <div className="p-4 bg-[#132842]">
-        <h3 className="font-bold text-white text-base sm:text-lg mb-3 line-clamp-2">{candidate.name}</h3>
+        <h3 className="font-bold text-white text-base sm:text-lg mb-3 line-clamp-2 min-h-[3.5rem]">{candidate.name}</h3>
         
         {/* Vote button - Full width */}
         {canVote && (

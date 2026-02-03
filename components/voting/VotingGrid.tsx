@@ -66,12 +66,25 @@
       fetchVotingStatus();
       // Delay to ensure animation triggers on all devices
       const mountTimer = setTimeout(() => setMounted(true), 50);
-      const candidatesInterval = setInterval(fetchCandidates, 2000);
-      const votingStatusInterval = setInterval(fetchVotingStatus, 5000);
+      
+      // Reduce polling frequency - only update every 30 seconds for vote counts
+      const candidatesInterval = setInterval(fetchCandidates, 30000);
+      const votingStatusInterval = setInterval(fetchVotingStatus, 30000);
+      
+      // Pause polling when tab is not visible
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          fetchCandidates();
+          fetchVotingStatus();
+        }
+      };
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      
       return () => {
         clearTimeout(mountTimer);
         clearInterval(candidatesInterval);
         clearInterval(votingStatusInterval);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
       };
     }, [fetchCandidates, fetchVotingStatus]);
 
@@ -79,7 +92,14 @@
       const storageKey = `voted_${category}`;
       localStorage.setItem(storageKey, candidateId);
       setVotedCandidateId(candidateId);
-      setTimeout(() => fetchCandidates(), 500);
+      // Optimistic update - increment vote count locally
+      setCandidates(prev => 
+        prev.map(c => 
+          c._id === candidateId 
+            ? { ...c, votes: c.votes + 1 } 
+            : c
+        ).sort((a, b) => b.votes - a.votes)
+      );
     };
 
     const handleClearVote = () => {
