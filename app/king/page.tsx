@@ -178,6 +178,14 @@ export default function KingPage() {
             <span>FEBRUARY 6TH, 2026</span>
             <div className="w-1 h-1 bg-[#FFB353] rounded-full" />
           </div>
+
+          <div className={`mt-12 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <a href="#voting" className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FFB353] to-[#FF8C00] hover:from-[#FFC77D] hover:to-[#FFB353] text-white rounded-full font-bold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+              <Crown className="w-4 h-4" />
+              START VOTING
+              <span className="ml-1">→</span>
+            </a>
+          </div>
         </div>
       </section>
 
