@@ -29,8 +29,14 @@ export async function POST(req: NextRequest) {
       cloudinaryId: result.public_id,
       filename: filename,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error uploading file:', error);
-    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+    
+    // Return detailed error message
+    const errorMessage = error?.message || 'Failed to upload file';
+    return NextResponse.json({ 
+      error: errorMessage,
+      details: process.env.NODE_ENV === 'development' ? error?.stack : undefined
+    }, { status: 500 });
   }
 }
