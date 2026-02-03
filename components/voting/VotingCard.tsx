@@ -96,7 +96,7 @@ export default function VotingCard({
 
       {/* Voted Badge */}
       {hasVoted && (
-        <div className="absolute top-3 right-3 z-20 bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg">
+        <div className="absolute top-3 right-3 z-20 bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow-lg" style={{ fontFamily: "'Quicksand', sans-serif" }}>
           <Check className="w-3 h-3" />
           Đã chọn
         </div>
@@ -137,7 +137,7 @@ export default function VotingCard({
 
       {/* Info section */}
       <div className="p-4 bg-[#132842]">
-        <h3 className="font-bold text-white text-base sm:text-lg mb-3 line-clamp-2 min-h-[3.5rem]">{candidate.name}</h3>
+        <h3 className="font-bold text-white text-base sm:text-lg mb-3 break-words leading-snug min-h-[3.5rem]">{candidate.name}</h3>
         
         {/* Vote button - Full width */}
         {canVote && (

@@ -50,7 +50,7 @@ export default function KingPage() {
   const topThree = candidates.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-[#1A3553] text-white">
+    <div className="min-h-screen bg-[#1A3553] text-white overflow-x-hidden">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#1A3553]/95 backdrop-blur-xl border-b border-[#FFB353]/20">
         <div className="max-w-7xl mx-auto px-4 py-3">
@@ -95,16 +95,16 @@ export default function KingPage() {
             <div className="md:hidden absolute top-full left-0 right-0 bg-[#1A3553] border-b border-[#FFB353]/20 shadow-lg p-4 space-y-2">
               <Link href="/king/leaderboard" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                 <Trophy className="w-5 h-5 text-[#FFB353]" />
-                <span className="font-medium text-white">Bảng xếp hạng King</span>
+                <span className="font-medium text-white" style={{ fontFamily: "'Quicksand', sans-serif" }}>Bảng xếp hạng King</span>
               </Link>
               <Link href="/queen" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                 <Crown className="w-5 h-5 text-[#FFB353]" />
-                <span className="font-medium text-white">Bình chọn Queen</span>
+                <span className="font-medium text-white" style={{ fontFamily: "'Quicksand', sans-serif" }}>Bình chọn Queen</span>
               </Link>
               <div className="border-t border-[#FFB353]/20 pt-2 mt-2">
                 <Link href="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                   <Users className="w-5 h-5 text-[#FFB353]" />
-                  <span className="font-medium text-white/60">Quản trị</span>
+                  <span className="font-medium text-white/60" style={{ fontFamily: "'Quicksand', sans-serif" }}>Quản trị</span>
                 </Link>
               </div>
             </div>
@@ -113,7 +113,7 @@ export default function KingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] sm:min-h-[50vh] flex items-center justify-center mt-16" style={{ overflow: 'visible' }}>
+      <section className="relative min-h-[75vh] sm:min-h-[80vh] md:min-h-[85vh] flex items-center justify-center mt-16 px-4 overflow-hidden">
         {/* Backdrop Image */}
         <div className="absolute inset-0" style={{ overflow: 'hidden' }}>
           <Image
@@ -132,7 +132,7 @@ export default function KingPage() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFB353]/5 rounded-full blur-3xl -mr-48 -mt-48" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FF8C00]/5 rounded-full blur-3xl -ml-40 -mb-40" />
 
-        <div className="relative z-10 text-center w-full py-16 sm:py-20 px-4 sm:px-6" style={{ overflow: 'visible' }}>
+        <div className="relative z-10 text-center w-full max-w-7xl mx-auto py-16 sm:py-20 px-4 sm:px-6">
           {/* Badge */}
           <div className={`inline-flex items-center gap-2 px-4 py-2 bg-[#FFB353]/15 border border-[#FFB353]/40 rounded-full mb-8 backdrop-blur-sm transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className="w-2 h-2 bg-[#FFB353] rounded-full animate-pulse" />
@@ -140,24 +140,24 @@ export default function KingPage() {
           </div>
 
           {/* Main Heading */}
-          <div className={`mb-6 transition-all duration-700 [text-shadow:_0_4px_24px_rgba(0,0,0,0.4)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ overflow: 'visible' }}>
-            <h1 className="font-black leading-tight text-center" style={{ overflow: 'visible' }}>
-              <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white block mb-2 drop-shadow-lg italic" style={{ fontFamily: "'Gloock', serif" }}>Vote For</span>
+          <div className={`mb-6 transition-all duration-700 [text-shadow:_0_4px_24px_rgba(0,0,0,0.4)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <h1 className="font-black leading-tight text-center">
+              <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white block mb-2 drop-shadow-lg italic" style={{ fontFamily: "'Gloock', serif" }}>Vote For</span>
             </h1>
-            <div className="flex justify-center overflow-visible">
-              <h2 className="font-black leading-none pb-2 overflow-visible text-center">
+            <div className="flex justify-center w-full">
+              <h2 className="font-black leading-none pb-2 text-center">
                 <span
                   className="
                     inline-block whitespace-nowrap italic drop-shadow-lg
-                    text-8xl sm:text-9xl md:text-[10rem] lg:text-[12rem] xl:text-[15rem]
-                    bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00]
+                    text-6xl xs:text-7xl sm:text-8xl md:text-[9rem] lg:text-[11rem] xl:text-[13rem]
+                   bg-gradient-to-r from-[#FFFFCC] via-[#f5dbae] to-[#FFCC66]
                     bg-clip-text text-transparent
-                    px-[0.2em]
-                    translate-x-[-0.10em]
+                    px-[0.15em]
+                    translate-x-[-0.08em]
                   "
                   style={{
                     fontFamily: "'Imperial Script', cursive",
-                    paddingBottom: '0.12em', // chừa chỗ cho descender (y, g, p, q...)
+                    paddingBottom: '0.12em',
                     lineHeight: 1.05,
                   }}
                 >
@@ -203,7 +203,7 @@ export default function KingPage() {
                   </div>
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center text-gray-800 font-bold text-lg shadow-lg">2</div>
                 </div>
-                <p className="text-center font-semibold text-white text-sm sm:text-base truncate max-w-[100px] sm:max-w-[140px] mt-2">{topThree[1]?.name}</p>
+                <p className="text-center font-semibold text-white text-sm sm:text-base max-w-[120px] sm:max-w-[160px] mt-2 break-words leading-snug">{topThree[1]?.name}</p>
                 <p className="text-[#FFB353] font-bold text-lg">{topThree[1]?.votes?.toLocaleString()}</p>
                 <span className="text-white/50 text-xs">votes</span>
               </div>
@@ -217,7 +217,7 @@ export default function KingPage() {
                   </div>
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-[#FFB353] to-[#FF8C00] rounded-full flex items-center justify-center text-[#1A3553] font-bold text-xl shadow-lg">1</div>
                 </div>
-                <p className="text-center font-bold text-white text-base sm:text-lg truncate max-w-[120px] sm:max-w-[160px] mt-2">{topThree[0]?.name}</p>
+                <p className="text-center font-bold text-white text-base sm:text-lg max-w-[140px] sm:max-w-[200px] mt-2 break-words leading-snug">{topThree[0]?.name}</p>
                 <div className="flex items-center gap-1">
                   <TrendingUp className="w-4 h-4 text-green-400" />
                   <span className="text-[#FFB353] font-bold text-xl">{topThree[0]?.votes?.toLocaleString()}</span>
@@ -233,7 +233,7 @@ export default function KingPage() {
                   </div>
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-10 bg-gradient-to-br from-amber-600 to-amber-700 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">3</div>
                 </div>
-                <p className="text-center font-semibold text-white text-sm sm:text-base truncate max-w-[100px] sm:max-w-[140px] mt-2">{topThree[2]?.name}</p>
+                <p className="text-center font-semibold text-white text-sm sm:text-base max-w-[120px] sm:max-w-[160px] mt-2 break-words leading-snug">{topThree[2]?.name}</p>
                 <p className="text-[#FFB353] font-bold text-lg">{topThree[2]?.votes?.toLocaleString()}</p>
                 <span className="text-white/50 text-xs">votes</span>
               </div>

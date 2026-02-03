@@ -10,6 +10,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-quicksand)', 'Quicksand', 'system-ui', 'sans-serif'],
+      },
+      screens: {
+        'xs': '475px',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

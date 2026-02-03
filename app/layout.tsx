@@ -1,19 +1,13 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Nunito, Montserrat } from 'next/font/google'
+import { Quicksand } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const nunito = Nunito({ 
+const quicksand = Quicksand({ 
   subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-nunito"
-});
-
-const montserrat = Montserrat({
-  subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-title"
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-quicksand"
 });
 
 export const metadata: Metadata = {
@@ -51,7 +45,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Imperial+Script&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${nunito.className} ${montserrat.variable} antialiased`}>
+      <body className={`${quicksand.variable} font-sans antialiased`}>
         {children}
         <Analytics />
       </body>
