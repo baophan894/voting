@@ -1,5 +1,26 @@
-require('dotenv').config({ path: '.env' });
+const fs = require('fs');
+const path = require('path');
 const mongoose = require('mongoose');
+
+// Simple .env parser (no dotenv needed)
+function loadEnv() {
+  const envPath = path.join(__dirname, '..', '.env');
+  if (!fs.existsSync(envPath)) {
+    console.error('❌ .env file not found!');
+    process.exit(1);
+  }
+  const content = fs.readFileSync(envPath, 'utf8');
+  content.split('\n').forEach(line => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const [key, ...valueParts] = trimmed.split('=');
+      if (key && valueParts.length > 0) {
+        process.env[key.trim()] = valueParts.join('=').trim();
+      }
+    }
+  });
+}
+loadEnv();
 
 const VotingSessionSchema = new mongoose.Schema(
   {

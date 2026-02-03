@@ -57,9 +57,9 @@ export default function KingPage() {
                 <p className="text-[10px] text-white/70">Year End Party 2026</p>
               </div>
             </Link>
-            
+
             {/* Mobile Menu Button */}
-            <button 
+            <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-[#FFB353]/10 transition-colors"
             >
@@ -106,26 +106,26 @@ export default function KingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] sm:min-h-[50vh] flex items-center justify-center overflow-hidden mt-16">
+      <section className="relative min-h-[60vh] sm:min-h-[50vh] flex items-center justify-center mt-16" style={{ overflow: 'visible' }}>
         {/* Backdrop Image */}
-        <div className="absolute inset-0">
-          <Image 
+        <div className="absolute inset-0" style={{ overflow: 'hidden' }}>
+          <Image
             src="/backdrop.jpg"
             alt="Year End Party 2026"
             fill
-            className="object-cover object-center"
+            className="object-cover object-center blur-[2px]"
             priority
           />
-          {/* Sophisticated Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1A3553]/60 via-[#1A3553]/55 to-[#132842]/70" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1A3553]/40 via-transparent to-[#1A3553]/40" />
+          {/* Sophisticated Gradient Overlay - more muted */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1A3553]/80 via-[#1A3553]/70 to-[#132842]/85" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1A3553]/50 via-transparent to-[#1A3553]/50" />
         </div>
 
         {/* Decorative Elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFB353]/5 rounded-full blur-3xl -mr-48 -mt-48" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FF8C00]/5 rounded-full blur-3xl -ml-40 -mb-40" />
 
-        <div className="relative z-10 text-center px-4 w-full max-w-4xl mx-auto py-16 sm:py-20">
+        <div className="relative z-10 text-center w-full py-16 sm:py-20" style={{ overflow: 'visible' }}>
           {/* Badge */}
           <div className={`inline-flex items-center gap-2 px-4 py-2 bg-[#FFB353]/15 border border-[#FFB353]/40 rounded-full mb-8 backdrop-blur-sm transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className="w-2 h-2 bg-[#FFB353] rounded-full animate-pulse" />
@@ -133,13 +133,38 @@ export default function KingPage() {
           </div>
 
           {/* Main Heading */}
-          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="text-white block mb-2">VOTE FOR</span>
-            <span className="bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00] bg-clip-text text-transparent drop-shadow-lg">YOUR KING</span>
-          </h1>
+          <div className={`mb-6 transition-all duration-700 [text-shadow:_0_4px_24px_rgba(0,0,0,0.4)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ overflow: 'visible' }}>
+            <h1 className="font-black leading-tight" style={{ overflow: 'visible' }}>
+              <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white block mb-2 drop-shadow-lg italic" style={{ fontFamily: "'Gloock', serif" }}>Vote For</span>
+            </h1>
+            <div className={`mb-6 transition-all duration-700 [text-shadow:_0_4px_24px_rgba(0,0,0,0.4)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ overflow: 'visible' }}>
+            
+              <h2 className="font-black leading-[1.08] pb-2 overflow-visible">
+                <span
+                  className="
+                inline-block whitespace-nowrap italic drop-shadow-lg
+                text-6xl sm:text-7xl md:text-[9rem] lg:text-[11rem] xl:text-[14rem]
+                bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00]
+                bg-clip-text text-transparent
+                px-[0.14em] -mx-[0.14em]
+              "
+                  style={{
+                    fontFamily: "'Imperial Script', cursive",
+                    display: 'inline-block',
+                    whiteSpace: 'nowrap',
+                    paddingBottom: '0.12em', // chừa chỗ cho descender (đuôi y, g, p, q...)
+                    lineHeight: 1.05,
+                  }}
+                >
+                  Your King
+                </span>
+              </h2>
+            </div>
+
+          </div>
 
           {/* Subtitle */}
-          <p className={`text-base sm:text-lg md:text-xl text-white/85 font-medium mb-8 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <p className={`text-lg sm:text-xl md:text-2xl text-white font-semibold mb-8 transition-all duration-700 delay-100 drop-shadow-md ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             GreenYellow Year End Party 2026
           </p>
 
@@ -232,7 +257,7 @@ export default function KingPage() {
               Nhấn vào ảnh để xem chi tiết • Mỗi thiết bị được vote <span className="text-[#FFB353] font-semibold">1 lần</span>
             </p>
           </div>
-          
+
           <VotingGrid category="king" />
         </div>
       </section>

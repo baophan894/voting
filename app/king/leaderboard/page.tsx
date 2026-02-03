@@ -123,11 +123,11 @@ export default function KingLeaderboardPage() {
             <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-[#1A3553]" />
           </div>
           
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2">
-            <span className="bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FFB353] bg-clip-text text-transparent italic">LEADERBOARD</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-3">
+            <span className="bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FFB353] bg-clip-text text-transparent drop-shadow-lg italic" style={{ fontFamily: "'Imperial Script', cursive", fontWeight: 700 }}>Leaderboard</span>
           </h1>
-          <p className="text-white/60 text-sm sm:text-base">King - Year End Party 2026</p>
-          <Crown className="w-8 h-8 sm:w-10 sm:h-10 text-[#FFB353] mx-auto mt-3" />
+          <p className="text-white/70 text-base sm:text-lg font-medium">King - Year End Party 2026</p>
+          <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-[#FFB353] mx-auto mt-4" />
         </div>
       </section>
 

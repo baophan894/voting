@@ -133,9 +133,9 @@ export default function QueenPage() {
           </div>
 
           {/* Main Heading */}
-          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="text-white block mb-2">VOTE FOR</span>
-            <span className="bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00] bg-clip-text text-transparent drop-shadow-lg">YOUR QUEEN</span>
+          <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight transition-all duration-700 [text-shadow:_0_4px_24px_rgba(0,0,0,0.4)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="text-white block mb-2 drop-shadow-lg" style={{ fontFamily: "'Gloock', serif" }}>Vote for</span>
+            <span className="bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00] bg-clip-text text-transparent drop-shadow-lg italic" style={{ fontFamily: "'Imperial Script', cursive", fontWeight: 700 }}>Your Queen</span>
           </h1>
 
           {/* Subtitle */}
