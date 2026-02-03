@@ -152,7 +152,7 @@ export default function KingLeaderboardPage() {
                   </div>
                   {/* Name overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 sm:p-3">
-                    <p className="text-white font-bold text-xs sm:text-sm truncate">{topThree[1]?.name}</p>
+                    <p className="text-white font-bold text-xs sm:text-sm break-words line-clamp-2">{topThree[1]?.name}</p>
                   </div>
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function KingLeaderboardPage() {
                   />
                   {/* Name & Winner Badge */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-2 sm:p-4">
-                    <p className="text-white font-bold text-xs sm:text-sm md:text-base truncate">{topThree[0]?.name}</p>
+                    <p className="text-white font-bold text-xs sm:text-sm md:text-base break-words line-clamp-2">{topThree[0]?.name}</p>
                     <div className="flex items-center justify-center mt-1">
                       <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-[#FFB353] to-[#FF8C00] rounded-full text-[10px] sm:text-xs font-bold text-[#1A3553]">WINNER</span>
                     </div>
@@ -210,7 +210,7 @@ export default function KingLeaderboardPage() {
                   </div>
                   {/* Name overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 sm:p-3">
-                    <p className="text-white font-bold text-xs sm:text-sm truncate">{topThree[2]?.name}</p>
+                    <p className="text-white font-bold text-xs sm:text-sm break-words line-clamp-2">{topThree[2]?.name}</p>
                   </div>
                 </div>
               </div>
@@ -248,7 +248,7 @@ export default function KingLeaderboardPage() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-white text-sm sm:text-base truncate">{candidate.name}</p>
+                  <p className="font-semibold text-white text-sm sm:text-base break-words">{candidate.name}</p>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2 bg-[#FFB353]/10 px-2 sm:px-4 py-1.5 sm:py-2 rounded-full">
                   <p className="text-[#FFB353] font-bold text-sm sm:text-base">{candidate.votes?.toLocaleString()}</p>

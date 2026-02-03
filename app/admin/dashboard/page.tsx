@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import UploadCandidates from '@/components/admin/UploadCandidates';
 import CandidateCard from '@/components/admin/CandidateCard';
 import { Button } from '@/components/ui/button';
-import { LogOut, Power, Crown, Users, TrendingUp, Home, Sparkles, Menu, X, Upload, List, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LogOut, Power, Crown, Users, TrendingUp, Home, Sparkles, Menu, X, Upload, List, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Candidate {
@@ -28,6 +28,8 @@ export default function AdminDashboard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [listCategory, setListCategory] = useState<'queen' | 'king'>('queen');
+  const [selectedCandidates, setSelectedCandidates] = useState<string[]>([]);
+  const [deletingBulk, setDeletingBulk] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -105,6 +107,52 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('Error toggling voting:', error);
       toast.error('Không thể thay đổi trạng thái bình chọn');
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedCandidates.length === 0) return;
+    
+    if (!confirm(`Bạn có chắc muốn xóa ${selectedCandidates.length} ứng viên?`)) return;
+
+    setDeletingBulk(true);
+    try {
+      const adminPassword = sessionStorage.getItem('adminPassword');
+      const response = await fetch('/api/admin/candidates/bulk-delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': adminPassword || '',
+        },
+        body: JSON.stringify({ ids: selectedCandidates }),
+      });
+
+      if (response.ok) {
+        toast.success(`Đã xóa ${selectedCandidates.length} ứng viên`);
+        setSelectedCandidates([]);
+        fetchCandidates();
+      } else {
+        toast.error('Không thể xóa ứng viên');
+      }
+    } catch (error) {
+      console.error('Error bulk deleting candidates:', error);
+      toast.error('Không thể xóa ứng viên');
+    } finally {
+      setDeletingBulk(false);
+    }
+  };
+
+  const toggleSelectCandidate = (id: string) => {
+    setSelectedCandidates(prev => 
+      prev.includes(id) ? prev.filter(cid => cid !== id) : [...prev, id]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedCandidates.length === currentCandidates.length) {
+      setSelectedCandidates([]);
+    } else {
+      setSelectedCandidates(currentCandidates.map(c => c._id));
     }
   };
 
@@ -329,7 +377,7 @@ export default function AdminDashboard() {
                   {/* Category Toggle */}
                   <div className="flex bg-slate-700/50 p-1 rounded-xl">
                     <button
-                      onClick={() => setListCategory('queen')}
+                      onClick={() => { setListCategory('queen'); setSelectedCandidates([]); }}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                         listCategory === 'queen'
                           ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white'
@@ -339,7 +387,7 @@ export default function AdminDashboard() {
                       Queen ({queenCandidates.length})
                     </button>
                     <button
-                      onClick={() => setListCategory('king')}
+                      onClick={() => { setListCategory('king'); setSelectedCandidates([]); }}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                         listCategory === 'king'
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
@@ -350,6 +398,43 @@ export default function AdminDashboard() {
                     </button>
                   </div>
                 </div>
+
+                {/* Bulk Actions Toolbar */}
+                {currentCandidates.length > 0 && (
+                  <div className="flex items-center justify-between gap-4 mb-4 p-3 bg-slate-700/30 rounded-xl border border-slate-600/50">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedCandidates.length === currentCandidates.length && currentCandidates.length > 0}
+                        onChange={toggleSelectAll}
+                        className="w-5 h-5 rounded-md border-2 border-slate-400 bg-slate-500 accent-cyan-400 checked:bg-cyan-400 checked:border-cyan-500 focus:ring-2 focus:ring-cyan-300 focus:ring-offset-0 cursor-pointer shadow-lg"
+                      />
+                      <span className="text-sm text-slate-300">
+                        {selectedCandidates.length > 0 ? `Đã chọn ${selectedCandidates.length}` : 'Chọn tất cả'}
+                      </span>
+                    </div>
+                    {selectedCandidates.length > 0 && (
+                      <Button
+                        size="sm"
+                        onClick={handleBulkDelete}
+                        disabled={deletingBulk}
+                        className="bg-red-500 hover:bg-red-600 text-white rounded-lg"
+                      >
+                        {deletingBulk ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                            Đang xóa...
+                          </>
+                        ) : (
+                          <>
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Xóa ({selectedCandidates.length})
+                          </>
+                        )}
+                      </Button>
+                    )}
+                  </div>
+                )}
 
                 {currentCandidates.length === 0 ? (
                   <div className="text-center py-12 text-slate-400">
@@ -363,6 +448,8 @@ export default function AdminDashboard() {
                         key={candidate._id}
                         candidate={candidate}
                         onDelete={fetchCandidates}
+                        isSelected={selectedCandidates.includes(candidate._id)}
+                        onToggleSelect={() => toggleSelectCandidate(candidate._id)}
                       />
                     ))}
                   </div>

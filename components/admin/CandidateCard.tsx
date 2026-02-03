@@ -15,9 +15,11 @@ interface CandidateCardProps {
     category: 'queen' | 'king';
   };
   onDelete: () => void;
+  isSelected?: boolean;
+  onToggleSelect?: () => void;
 }
 
-export default function CandidateCard({ candidate, onDelete }: CandidateCardProps) {
+export default function CandidateCard({ candidate, onDelete, isSelected, onToggleSelect }: CandidateCardProps) {
   const [deleting, setDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -48,7 +50,20 @@ export default function CandidateCard({ candidate, onDelete }: CandidateCardProp
   };
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-slate-900/50">
+    <div className="group relative overflow-hidden rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/50">
+      {/* Selection Checkbox */}
+      {onToggleSelect && (
+        <div className="absolute top-2 left-2 z-10">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={onToggleSelect}
+            className="w-6 h-6 rounded-md border-2 border-slate-400 bg-slate-500 accent-cyan-400 checked:bg-cyan-400 checked:border-cyan-500 focus:ring-2 focus:ring-cyan-300 focus:ring-offset-0 cursor-pointer shadow-xl backdrop-blur-sm"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
       {/* Image */}
       <div className="relative aspect-[3/4] w-full bg-slate-700/50 overflow-hidden">
         <Image
@@ -57,22 +72,21 @@ export default function CandidateCard({ candidate, onDelete }: CandidateCardProp
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
+
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60" />
-        
+
         {/* Vote count badge */}
         <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 bg-slate-900/80 backdrop-blur-sm rounded-full">
           <Heart className="w-3 h-3 text-red-400 fill-red-400" />
           <span className="text-xs font-semibold text-white">{candidate.votes}</span>
         </div>
-        
+
         {/* Category badge */}
-        <div className={`absolute top-2 left-2 px-2 py-1 rounded-full text-xs font-semibold ${
-          candidate.category === 'queen' 
-            ? 'bg-pink-500/80 text-white' 
+        <div className={`absolute ${onToggleSelect ? 'top-9 left-2' : 'top-2 left-2'} px-2 py-1 rounded-full text-xs font-semibold ${candidate.category === 'queen'
+            ? 'bg-pink-500/80 text-white'
             : 'bg-blue-500/80 text-white'
-        }`}>
+          }`}>
           {candidate.category === 'queen' ? 'Queen' : 'King'}
         </div>
       </div>
@@ -80,7 +94,7 @@ export default function CandidateCard({ candidate, onDelete }: CandidateCardProp
       {/* Info */}
       <div className="p-3">
         <h3 className="font-semibold text-white text-sm truncate mb-2">{candidate.name}</h3>
-        
+
         {/* Delete button */}
         <Button
           variant="ghost"

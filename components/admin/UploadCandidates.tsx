@@ -122,14 +122,18 @@ export default function UploadCandidates({ onCandidateAdded }: UploadCandidatesP
 
     setLoading(true);
     setUploadProgress({ current: 0, total: imageFiles.length });
-    let successCount = 0;
 
     try {
-      for (let i = 0; i < imageFiles.length; i++) {
-        setUploadProgress({ current: i + 1, total: imageFiles.length });
-        const success = await uploadFile(imageFiles[i]);
-        if (success) successCount++;
-      }
+      // Upload all files in parallel using Promise.all
+      const uploadPromises = imageFiles.map(async (file, index) => {
+        const success = await uploadFile(file);
+        // Update progress after each file completes
+        setUploadProgress(prev => ({ ...prev, current: prev.current + 1 }));
+        return success;
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const successCount = results.filter(r => r).length;
 
       toast.success(`Đã thêm ${successCount}/${imageFiles.length} ứng viên thành công`);
       onCandidateAdded();
@@ -161,14 +165,18 @@ export default function UploadCandidates({ onCandidateAdded }: UploadCandidatesP
 
     setLoading(true);
     setUploadProgress({ current: 0, total: imageFiles.length });
-    let successCount = 0;
 
     try {
-      for (let i = 0; i < imageFiles.length; i++) {
-        setUploadProgress({ current: i + 1, total: imageFiles.length });
-        const success = await uploadFile(imageFiles[i]);
-        if (success) successCount++;
-      }
+      // Upload all files in parallel using Promise.all
+      const uploadPromises = imageFiles.map(async (file, index) => {
+        const success = await uploadFile(file);
+        // Update progress after each file completes
+        setUploadProgress(prev => ({ ...prev, current: prev.current + 1 }));
+        return success;
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const successCount = results.filter(r => r).length;
 
       toast.success(`Đã thêm ${successCount}/${imageFiles.length} ứng viên từ folder`);
       onCandidateAdded();
