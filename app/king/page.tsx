@@ -149,7 +149,7 @@ export default function KingPage() {
                 <span
                   className="
                     inline-block whitespace-nowrap italic drop-shadow-lg
-                    text-6xl xs:text-7xl sm:text-8xl md:text-[9rem] lg:text-[11rem] xl:text-[13rem]
+                    text-8xl xs:text-9xl sm:text-10xl md:text-[11rem] lg:text-[13rem] xl:text-[15rem]
                    bg-gradient-to-r from-[#FFFFCC] via-[#f5dbae] to-[#FFCC66]
                     bg-clip-text text-transparent
                     px-[0.15em]
