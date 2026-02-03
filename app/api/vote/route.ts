@@ -27,10 +27,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Voting is currently closed for this category' }, { status: 403 });
     }
 
-    // Increment candidate vote count first
+    // Increment candidate vote count and update lastVotedAt
     const candidate = await Candidate.findByIdAndUpdate(
       candidateId,
-      { $inc: { votes: 1 } },
+      { 
+        $inc: { votes: 1 },
+        $set: { lastVotedAt: new Date() }
+      },
       { new: true }
     );
 

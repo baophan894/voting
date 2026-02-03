@@ -7,6 +7,7 @@ export interface ICandidate extends Document {
   cloudinaryId: string;
   category: 'queen' | 'king';
   votes: number;
+  lastVotedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -35,6 +36,9 @@ const CandidateSchema = new Schema<ICandidate>(
     votes: {
       type: Number,
       default: 0,
+    },
+    lastVotedAt: {
+      type: Date,
     },
   },
   { timestamps: true }

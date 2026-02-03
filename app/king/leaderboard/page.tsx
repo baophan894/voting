@@ -12,6 +12,7 @@ interface Candidate {
   name: string;
   image: string;
   votes: number;
+  lastVotedAt?: string;
   category: 'queen' | 'king';
 }
 
@@ -29,7 +30,12 @@ export default function KingLeaderboardPage() {
       });
       const data = await response.json();
       if (Array.isArray(data)) {
-        data.sort((a: Candidate, b: Candidate) => b.votes - a.votes);
+        data.sort((a: Candidate, b: Candidate) => {
+          if (b.votes !== a.votes) return b.votes - a.votes;
+          if (!a.lastVotedAt) return 1;
+          if (!b.lastVotedAt) return -1;
+          return new Date(a.lastVotedAt).getTime() - new Date(b.lastVotedAt).getTime();
+        });
         setCandidates(data);
       }
     } catch (error) {

@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get('category') as 'queen' | 'king' | null;
 
     const query = category ? { category } : {};
-    const candidates = await Candidate.find(query).sort({ createdAt: -1 });
+    const candidates = await Candidate.find(query).sort({ votes: -1, lastVotedAt: 1 });
 
     return NextResponse.json(candidates, {
       headers: {
