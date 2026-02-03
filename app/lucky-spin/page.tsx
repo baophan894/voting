@@ -406,30 +406,41 @@ function EmployeeSlot({ employeeCode, isSpinning, baseDelay, delayPerChar, isSin
   );
 }
 
-// Floating particles component
-function FloatingParticles() {
+// Floating particles component - optimized
+const FloatingParticles = React.memo(function FloatingParticles() {
+  const particles = React.useMemo(() => 
+    Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 5}s`,
+      duration: `${3 + Math.random() * 4}s`,
+    })), []
+  );
+  
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {Array.from({ length: 30 }).map((_, i) => (
+      {particles.map((p) => (
         <div
-          key={i}
+          key={p.id}
           className="absolute w-1 h-1 bg-amber-400/60 rounded-full animate-float"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${3 + Math.random() * 4}s`,
+            left: p.left,
+            top: p.top,
+            animationDelay: p.delay,
+            animationDuration: p.duration,
           }}
         />
       ))}
     </div>
   );
-}
+});
 
 export default function LuckyDrawPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [winners, setWinners] = useState<WinnersData | null>(null);
   const [spinning, setSpinning] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false); // Prevent double clicks
   const [currentSpinResult, setCurrentSpinResult] = useState<Winner[]>([]);
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [selectedPrizeType, setSelectedPrizeType] = useState<PrizeType>('consolation');
@@ -495,7 +506,7 @@ export default function LuckyDrawPage() {
   };
 
   const handleSpin = async () => {
-    if (spinning) return;
+    if (spinning || isProcessing) return;
 
     const config = selectedPrize;
 
@@ -503,6 +514,9 @@ export default function LuckyDrawPage() {
       toast.error(`Không đủ nhân viên để quay! Cần ${config.winnersPerSpin} người.`);
       return;
     }
+
+    // Disable button immediately
+    setIsProcessing(true);
 
     try {
       const response = await fetch('/api/admin/spin', {
@@ -518,6 +532,7 @@ export default function LuckyDrawPage() {
 
       if (!response.ok) {
         toast.error(result.error || 'Lỗi khi quay số');
+        setIsProcessing(false);
         return;
       }
 
@@ -541,6 +556,7 @@ export default function LuckyDrawPage() {
 
       setTimeout(() => {
         setSpinning(false);
+        setIsProcessing(false); // Re-enable button
         setCurrentSpinResult(result.winners);
         setShowWinnerModal(true);
         fetchEmployees();
@@ -560,6 +576,7 @@ export default function LuckyDrawPage() {
     } catch (error) {
       console.error('Error spinning:', error);
       toast.error('Lỗi khi quay số');
+      setIsProcessing(false); // Re-enable button on error
     }
   };
 
@@ -591,7 +608,7 @@ export default function LuckyDrawPage() {
   };
 
   const isSpinDisabled = () => {
-    return spinning;
+    return spinning || isProcessing;
   };
 
   const getRemainingSpins = () => {
@@ -854,9 +871,9 @@ export default function LuckyDrawPage() {
             }}
           />
           
-          {/* Celebration Effects */}
+          {/* Celebration Effects - Reduced for performance */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {Array.from({ length: 80 }).map((_, i) => (
+            {Array.from({ length: 40 }).map((_, i) => (
               <div
                 key={i}
                 className="absolute w-3 h-3 rounded-full animate-confetti"
