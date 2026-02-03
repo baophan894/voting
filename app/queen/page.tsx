@@ -132,7 +132,7 @@ export default function QueenPage() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFB353]/5 rounded-full blur-3xl -mr-48 -mt-48" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FF8C00]/5 rounded-full blur-3xl -ml-40 -mb-40" />
 
-        <div className="relative z-10 text-center w-full py-16 sm:py-20" style={{ overflow: 'visible' }}>
+        <div className="relative z-10 text-center w-full py-16 sm:py-20 px-4 sm:px-6" style={{ overflow: 'visible' }}>
           {/* Badge */}
           <div className={`inline-flex items-center gap-2 px-4 py-2 bg-[#FFB353]/15 border border-[#FFB353]/40 rounded-full mb-8 backdrop-blur-sm transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <span className="w-2 h-2 bg-[#FFB353] rounded-full animate-pulse" />
