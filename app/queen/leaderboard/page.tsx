@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,7 @@ interface Candidate {
 }
 
 export default function QueenLeaderboardPage() {
+  const pathname = usePathname();
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -43,6 +45,11 @@ export default function QueenLeaderboardPage() {
     const interval = setInterval(fetchCandidates, 3000);
     return () => clearInterval(interval);
   }, [fetchCandidates]);
+
+  // Đóng menu khi route thay đổi
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   if (loading) {
     return (
@@ -99,15 +106,15 @@ export default function QueenLeaderboardPage() {
 
           {menuOpen && (
             <div className="md:hidden absolute top-full left-0 right-0 bg-[#1A3553] border-b border-[#FFB353]/20 p-4 space-y-2">
-              <Link href="/queen" className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
+              <Link href="/queen" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                 <Heart className="w-5 h-5 text-[#FFB353]" />
                 <span className="font-medium text-white">Bình chọn Queen</span>
               </Link>
-              <Link href="/king" className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
+              <Link href="/king" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                 <Crown className="w-5 h-5 text-[#FFB353]" />
                 <span className="font-medium text-white">Bình chọn King</span>
               </Link>
-              <Link href="/king/leaderboard" className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
+              <Link href="/king/leaderboard" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                 <Trophy className="w-5 h-5 text-[#FFB353]" />
                 <span className="font-medium text-white">King Leaderboard</span>
               </Link>

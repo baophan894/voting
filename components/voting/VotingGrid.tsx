@@ -91,6 +91,7 @@
     const handleVote = (candidateId: string) => {
       const storageKey = `voted_${category}`;
       localStorage.setItem(storageKey, candidateId);
+      // Set voted state immediately to disable other buttons
       setVotedCandidateId(candidateId);
       // Optimistic update - increment vote count locally
       setCandidates(prev => 
@@ -102,10 +103,42 @@
       );
     };
 
-    const handleClearVote = () => {
-      const storageKey = `voted_${category}`;
-      localStorage.removeItem(storageKey);
-      setVotedCandidateId(null);
+    const handleClearVote = async () => {
+      if (!votedCandidateId) return;
+      
+      try {
+        // Call API to decrement the vote
+        const response = await fetch('/api/vote', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            candidateId: votedCandidateId,
+          }),
+        });
+
+        if (response.ok) {
+          // Only clear localStorage after successful API call
+          const storageKey = `voted_${category}`;
+          localStorage.removeItem(storageKey);
+          setVotedCandidateId(null);
+          
+          // Update local state to decrement vote count
+          setCandidates(prev => 
+            prev.map(c => 
+              c._id === votedCandidateId 
+                ? { ...c, votes: Math.max(0, c.votes - 1) } 
+                : c
+            ).sort((a, b) => b.votes - a.votes)
+          );
+          
+          // Refresh from server to ensure accuracy
+          fetchCandidates();
+        }
+      } catch (error) {
+        console.error('Error clearing vote:', error);
+      }
     };
 
     const openModal = (candidate: Candidate, rank: number) => {

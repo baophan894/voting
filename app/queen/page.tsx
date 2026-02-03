@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import VotingGrid from '@/components/voting/VotingGrid';
@@ -16,6 +17,7 @@ interface Candidate {
 }
 
 export default function QueenPage() {
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,6 +41,11 @@ export default function QueenPage() {
     const interval = setInterval(fetchCandidates, 3000);
     return () => clearInterval(interval);
   }, [fetchCandidates]);
+
+  // Đóng menu khi route thay đổi
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   const topThree = candidates.slice(0, 3);
 
@@ -86,16 +93,16 @@ export default function QueenPage() {
           {/* Mobile Menu */}
           {menuOpen && (
             <div className="md:hidden absolute top-full left-0 right-0 bg-[#1A3553] border-b border-[#FFB353]/20 shadow-lg p-4 space-y-2">
-              <Link href="/queen/leaderboard" className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
+              <Link href="/queen/leaderboard" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                 <Trophy className="w-5 h-5 text-[#FFB353]" />
                 <span className="font-medium text-white">Bảng xếp hạng Queen</span>
               </Link>
-              <Link href="/king" className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
+              <Link href="/king" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                 <Crown className="w-5 h-5 text-[#FFB353]" />
                 <span className="font-medium text-white">Bình chọn King</span>
               </Link>
               <div className="border-t border-[#FFB353]/20 pt-2 mt-2">
-                <Link href="/admin" className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
+                <Link href="/admin" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#FFB353]/10 transition-colors">
                   <Users className="w-5 h-5 text-[#FFB353]" />
                   <span className="font-medium text-white/60">Quản trị</span>
                 </Link>
@@ -134,33 +141,32 @@ export default function QueenPage() {
 
           {/* Main Heading */}
           <div className={`mb-6 transition-all duration-700 [text-shadow:_0_4px_24px_rgba(0,0,0,0.4)] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ overflow: 'visible' }}>
-            <h1 className="font-black leading-tight" style={{ overflow: 'visible' }}>
+            <h1 className="font-black leading-tight text-center" style={{ overflow: 'visible' }}>
               <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white block mb-2 drop-shadow-lg italic" style={{ fontFamily: "'Gloock', serif" }}>Vote For</span>
             </h1>
-            <h2 className="font-black leading-[1.08] pb-2 overflow-visible">
-              <span
-                className="
-                inline-block whitespace-nowrap italic drop-shadow-lg
-                text-6xl sm:text-7xl md:text-[9rem] lg:text-[11rem] xl:text-[14rem]
-                bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00]
-                bg-clip-text text-transparent
-                px-[0.14em] -mx-[0.14em]
-              "
-                style={{
-                  fontFamily: "'Imperial Script', cursive",
-                  display: 'inline-block',
-                  whiteSpace: 'nowrap',
-                  paddingBottom: '0.12em', // chừa chỗ cho descender (đuôi y, g, p, q...)
-                  lineHeight: 1.05,
-                }}
-              >
-                Your Queen
-              </span>
-            </h2>
-
+            <div className="flex justify-center overflow-visible">
+              <h2 className="font-black leading-none pb-2 overflow-visible text-center">
+                <span
+                  className="
+                    inline-block whitespace-nowrap italic drop-shadow-lg
+                    text-8xl sm:text-9xl md:text-[10rem] lg:text-[12rem] xl:text-[15rem]
+                    bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00]
+                    bg-clip-text text-transparent
+                    px-[0.2em]
+                    translate-x-[-0.10em]
+                  "
+                  style={{
+                    fontFamily: "'Imperial Script', cursive",
+                    paddingBottom: '0.12em', // chừa chỗ cho descender (y, g, p, q...)
+                    lineHeight: 1.05,
+                  }}
+                >
+                  Your Queen
+                </span>
+              </h2>
+            </div>
 
           </div>
-
           {/* Subtitle */}
           <p className={`text-lg sm:text-xl md:text-2xl text-white font-semibold mb-8 transition-all duration-700 delay-100 drop-shadow-md ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             GreenYellow Year End Party 2026

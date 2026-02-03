@@ -51,6 +51,37 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function DELETE(req: NextRequest) {
+  try {
+    await connectDB();
+
+    const { candidateId } = await req.json();
+
+    if (!candidateId) {
+      return NextResponse.json({ error: 'Missing candidateId' }, { status: 400 });
+    }
+
+    // Decrement candidate vote count (ensure it doesn't go below 0)
+    const candidate = await Candidate.findById(candidateId);
+    if (!candidate) {
+      return NextResponse.json({ error: 'Candidate not found' }, { status: 404 });
+    }
+
+    if (candidate.votes > 0) {
+      candidate.votes -= 1;
+      await candidate.save();
+    }
+
+    return NextResponse.json({
+      success: true,
+      votes: candidate.votes,
+    });
+  } catch (error) {
+    console.error('Error removing vote:', error);
+    return NextResponse.json({ error: 'Failed to remove vote' }, { status: 500 });
+  }
+}
+
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
