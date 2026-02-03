@@ -66,7 +66,7 @@ const PRIZE_CONFIGS: PrizeConfig[] = [
     nameVi: 'Giải Khuyến Khích',
     totalWinners: 40,
     winnersPerSpin: 10,
-    spinDuration: 800, // Faster for consolation
+    spinDuration: 1600, // 10 seconds total
     gradient: 'from-emerald-400 to-cyan-400',
     bgColor: 'bg-emerald-500/10',
     borderColor: 'border-emerald-500/30',
@@ -77,7 +77,7 @@ const PRIZE_CONFIGS: PrizeConfig[] = [
     nameVi: 'Giải Ba',
     totalWinners: 3,
     winnersPerSpin: 1,
-    spinDuration: 1000,
+    spinDuration: 1600, // 10 seconds total
     gradient: 'from-amber-400 to-orange-500',
     bgColor: 'bg-amber-500/10',
     borderColor: 'border-amber-500/30',
@@ -88,7 +88,7 @@ const PRIZE_CONFIGS: PrizeConfig[] = [
     nameVi: 'Giải Nhì',
     totalWinners: 3,
     winnersPerSpin: 1,
-    spinDuration: 1200, // Longer
+    spinDuration: 2200, // 14 seconds total
     gradient: 'from-slate-300 to-gray-400',
     bgColor: 'bg-slate-400/10',
     borderColor: 'border-slate-400/30',
@@ -99,7 +99,7 @@ const PRIZE_CONFIGS: PrizeConfig[] = [
     nameVi: 'Giải Nhất',
     totalWinners: 2,
     winnersPerSpin: 1,
-    spinDuration: 1500, // Even longer
+    spinDuration: 2200, // 14 seconds total
     gradient: 'from-yellow-300 to-amber-500',
     bgColor: 'bg-yellow-500/10',
     borderColor: 'border-yellow-500/30',
@@ -110,7 +110,7 @@ const PRIZE_CONFIGS: PrizeConfig[] = [
     nameVi: 'Giải Đặc Biệt',
     totalWinners: 1,
     winnersPerSpin: 1,
-    spinDuration: 2000, // Longest for special
+    spinDuration: 2200, // 14 seconds total
     gradient: 'from-purple-400 via-pink-500 to-rose-500',
     bgColor: 'bg-purple-500/10',
     borderColor: 'border-purple-500/30',
@@ -438,8 +438,26 @@ export default function LuckyDrawPage() {
   const [loading, setLoading] = useState(true);
   const [viewingPrize, setViewingPrize] = useState<PrizeType | null>(null);
 
+  // Audio refs for sound effects
+  const spinSoundRef = useRef<HTMLAudioElement | null>(null);
+  const winnerSoundRef = useRef<HTMLAudioElement | null>(null);
+
   const selectedPrize = PRIZE_CONFIGS.find(p => p.type === selectedPrizeType)!;
   const viewingPrizeConfig = viewingPrize ? PRIZE_CONFIGS.find(p => p.type === viewingPrize) : null;;
+
+  // Initialize audio on mount
+  useEffect(() => {
+    spinSoundRef.current = new Audio('/assets/sounds/spin.mp3');
+    winnerSoundRef.current = new Audio('/assets/sounds/winner.mp3');
+    spinSoundRef.current.loop = true;
+    spinSoundRef.current.volume = 0.3; // 50% volume for spin
+    winnerSoundRef.current.volume = 1.0; // 100% volume for winner (max)
+    
+    return () => {
+      spinSoundRef.current?.pause();
+      winnerSoundRef.current?.pause();
+    };
+  }, []);
 
   // Fetch data on mount
   useEffect(() => {
@@ -480,12 +498,6 @@ export default function LuckyDrawPage() {
     if (spinning) return;
 
     const config = selectedPrize;
-    const currentWinners = getPrizeWinners(config.type);
-    
-    if (currentWinners.length >= config.totalWinners) {
-      toast.error(`${config.nameVi} đã quay đủ số người trúng giải!`);
-      return;
-    }
 
     if (employees.length < config.winnersPerSpin) {
       toast.error(`Không đủ nhân viên để quay! Cần ${config.winnersPerSpin} người.`);
@@ -513,12 +525,19 @@ export default function LuckyDrawPage() {
       setSpinning(true);
       setCurrentSpinResult([]);
 
-      // Calculate total animation time based on prize type
+      // Play spin sound
+      if (spinSoundRef.current) {
+        spinSoundRef.current.currentTime = 0;
+        spinSoundRef.current.play().catch(() => {});
+      }
+
+      // Calculate animation time based on slot stopping
+      // 6 characters, each stops with delayPerChar interval
       const charsPerCode = 6;
       const delayPerChar = config.spinDuration;
-      const baseAnimationTime = charsPerCode * delayPerChar;
-      const staggerDelay = config.winnersPerSpin > 1 ? (config.winnersPerSpin - 1) * 300 : 0;
-      const totalAnimationTime = baseAnimationTime + staggerDelay + 1500;
+      const baseDelay = config.winnersPerSpin === 1 ? 1000 : 500;
+      const lastCharStopTime = baseDelay + (charsPerCode - 1) * delayPerChar;
+      const totalAnimationTime = lastCharStopTime + 500; // Add buffer for final stop
 
       setTimeout(() => {
         setSpinning(false);
@@ -526,6 +545,16 @@ export default function LuckyDrawPage() {
         setShowWinnerModal(true);
         fetchEmployees();
         fetchWinners();
+        
+        // Stop spin sound and play winner sound
+        if (spinSoundRef.current) {
+          spinSoundRef.current.pause();
+          spinSoundRef.current.currentTime = 0;
+        }
+        if (winnerSoundRef.current) {
+          winnerSoundRef.current.currentTime = 0;
+          winnerSoundRef.current.play().catch(() => {});
+        }
       }, totalAnimationTime);
 
     } catch (error) {
@@ -562,8 +591,7 @@ export default function LuckyDrawPage() {
   };
 
   const isSpinDisabled = () => {
-    const currentWinners = getPrizeWinners(selectedPrize.type);
-    return currentWinners.length >= selectedPrize.totalWinners || spinning;
+    return spinning;
   };
 
   const getRemainingSpins = () => {
@@ -661,29 +689,23 @@ export default function LuckyDrawPage() {
               <SelectContent className="bg-purple-900/95 border-purple-500/50 backdrop-blur">
                 {PRIZE_CONFIGS.map((config) => {
                   const prizeWinners = getPrizeWinners(config.type);
-                  const isComplete = prizeWinners.length >= config.totalWinners;
                   return (
                     <SelectItem 
                       key={config.type} 
                       value={config.type}
                       className="text-white hover:bg-purple-700/50 focus:bg-purple-700/50"
-                      disabled={isComplete}
                     >
                       <div className="flex items-center gap-2">
                         <span>{config.nameVi}</span>
                         <span className="text-xs text-purple-300">
-                          ({prizeWinners.length}/{config.totalWinners})
+                          ({prizeWinners.length} đã trúng)
                         </span>
-                        {isComplete && <span className="text-green-400 text-xs">✓</span>}
                       </div>
                     </SelectItem>
                   );
                 })}
               </SelectContent>
             </Select>
-            <p className="mt-2 text-sm text-purple-400">
-              Còn {getRemainingSpins()} lần quay cho {selectedPrize.nameVi}
-            </p>
           </div>
 
           {/* Spin Display */}
