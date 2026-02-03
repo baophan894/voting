@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import UploadCandidates from '@/components/admin/UploadCandidates';
+import UploadEmployees from '@/components/admin/UploadEmployees';
 import CandidateCard from '@/components/admin/CandidateCard';
 import { Button } from '@/components/ui/button';
-import { LogOut, Power, Crown, Users, TrendingUp, Home, Sparkles, Menu, X, Upload, List, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
+import { LogOut, Power, Crown, Users, TrendingUp, Home, Sparkles, Menu, X, Upload, List, ChevronLeft, ChevronRight, Trash2, FileSpreadsheet, Gift } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Candidate {
@@ -16,7 +17,7 @@ interface Candidate {
   category: 'queen' | 'king';
 }
 
-type SidebarView = 'upload' | 'list';
+type SidebarView = 'upload' | 'list' | 'employees';
 
 export default function AdminDashboard() {
   const [queenCandidates, setQueenCandidates] = useState<Candidate[]>([]);
@@ -30,6 +31,7 @@ export default function AdminDashboard() {
   const [listCategory, setListCategory] = useState<'queen' | 'king'>('queen');
   const [selectedCandidates, setSelectedCandidates] = useState<string[]>([]);
   const [deletingBulk, setDeletingBulk] = useState(false);
+  const [employeeCount, setEmployeeCount] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -42,6 +44,7 @@ export default function AdminDashboard() {
 
     fetchCandidates();
     fetchVotingStatus();
+    fetchEmployeeCount();
   }, [router]);
 
   const fetchCandidates = async () => {
@@ -73,6 +76,16 @@ export default function AdminDashboard() {
       });
     } catch (error) {
       console.error('Error fetching voting status:', error);
+    }
+  };
+
+  const fetchEmployeeCount = async () => {
+    try {
+      const response = await fetch('/api/admin/employees');
+      const data = await response.json();
+      setEmployeeCount(Array.isArray(data) ? data.length : 0);
+    } catch (error) {
+      console.error('Error fetching employee count:', error);
     }
   };
 
@@ -216,6 +229,22 @@ export default function AdminDashboard() {
             <List className="w-5 h-5 flex-shrink-0" />
             {!sidebarCollapsed && <span className="font-medium">Danh sách</span>}
           </button>
+
+          <div className="my-4 border-t border-slate-700/50" />
+
+          <button
+            onClick={() => setSidebarView('employees')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              sidebarView === 'employees'
+                ? 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 border border-yellow-500/30'
+                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+            }`}
+          >
+            <FileSpreadsheet className="w-5 h-5 flex-shrink-0" />
+            {!sidebarCollapsed && <span className="font-medium">Nhân viên</span>}
+          </button>
+
+      
         </nav>
 
   
@@ -290,6 +319,16 @@ export default function AdminDashboard() {
               <List className="w-5 h-5" />
               <span>Danh sách</span>
             </button>
+            <button
+              onClick={() => { setSidebarView('employees'); setMobileMenuOpen(false); }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl ${
+                sidebarView === 'employees' ? 'bg-yellow-500/20 text-yellow-400' : 'text-slate-400'
+              }`}
+            >
+              <FileSpreadsheet className="w-5 h-5" />
+              <span>Nhân viên</span>
+            </button>
+        
             <a href="/" target="_blank" rel="noopener noreferrer" className="block">
               <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400">
                 <Home className="w-5 h-5" />
@@ -454,6 +493,42 @@ export default function AdminDashboard() {
                     ))}
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {sidebarView === 'employees' && (
+            <div className={`transition-all duration-500 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="bg-slate-800/50 rounded-2xl border border-slate-700/50 p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <FileSpreadsheet className="w-5 h-5 text-yellow-400" />
+                    Quản lý Nhân viên
+                  </h2>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-700/50 rounded-lg">
+                    <Users className="w-4 h-4 text-blue-400" />
+                    <span className="text-sm text-slate-300">{employeeCount} nhân viên</span>
+                  </div>
+                </div>
+                
+                <div className="space-y-6">
+                  <div className="p-4 rounded-xl bg-slate-700/30 border border-slate-600/50">
+                    <h3 className="font-semibold mb-3 flex items-center gap-2">
+                      <Upload className="w-4 h-4 text-emerald-400" />
+                      Upload danh sách nhân viên
+                    </h3>
+                    <UploadEmployees onUploadComplete={fetchEmployeeCount} />
+                  </div>
+
+                  <div className="flex items-center justify-center gap-4">
+                    <a href="/lucky-spin">
+                      <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white shadow-lg">
+                        <Gift className="w-4 h-4 mr-2" />
+                        Mở Vòng quay may mắn
+                      </Button>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           )}
