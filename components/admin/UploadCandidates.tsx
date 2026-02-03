@@ -29,46 +29,55 @@ export default function UploadCandidates({ onCandidateAdded }: UploadCandidatesP
 
   const uploadFile = async (file: File, nameOverride?: string) => {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
       const adminPassword = sessionStorage.getItem('adminPassword');
-      const uploadResponse = await fetch('/api/admin/upload', {
+      
+      // Get filename without extension for candidate name
+      const fullName = file.name.split('/').pop() || file.name;
+      const filename = fullName.replace(/\.[^/.]+$/, '');
+
+      // Step 1: Get Cloudinary signature from our API
+      const signatureResponse = await fetch('/api/admin/cloudinary-signature', {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-admin-password': adminPassword || '',
         },
+        body: JSON.stringify({ filename }),
+      });
+
+      if (!signatureResponse.ok) {
+        throw new Error('Failed to get upload signature');
+      }
+
+      const { signature, timestamp, publicId, cloudName, apiKey } = await signatureResponse.json();
+
+      // Step 2: Upload directly to Cloudinary from client
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('signature', signature);
+      formData.append('timestamp', timestamp.toString());
+      formData.append('public_id', publicId);
+      formData.append('folder', 'voting_app');
+      formData.append('api_key', apiKey);
+
+      const cloudinaryUploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+      
+      const uploadResponse = await fetch(cloudinaryUploadUrl, {
+        method: 'POST',
         body: formData,
       });
 
-      console.log('Upload response status:', uploadResponse.status);
-      console.log('Upload response headers:', Object.fromEntries(uploadResponse.headers.entries()));
-
-      // Get response text first to see what we're receiving
-      const responseText = await uploadResponse.text();
-      console.log('Upload response body (raw):', responseText);
-
       if (!uploadResponse.ok) {
-        console.error('Upload failed with status:', uploadResponse.status);
-        console.error('Response body:', responseText);
-        throw new Error(`Upload failed: ${responseText.substring(0, 200)}`);
+        const errorText = await uploadResponse.text();
+        console.error('Cloudinary upload failed:', errorText);
+        throw new Error('Failed to upload to Cloudinary');
       }
 
-      // Try to parse as JSON
-      let uploadData;
-      try {
-        uploadData = JSON.parse(responseText);
-      } catch (jsonError) {
-        console.error('Failed to parse JSON:', jsonError);
-        console.error('Response was:', responseText.substring(0, 500));
-        throw new Error('Server returned invalid JSON response');
-      }
+      const uploadData = await uploadResponse.json();
+      console.log('Cloudinary upload success:', uploadData);
 
-      console.log('Parsed upload data:', uploadData);
-
-      const candidateName = nameOverride || uploadData.filename;
-
-      // Create candidate
+      // Step 3: Create candidate with the Cloudinary URL
+      const candidateName = nameOverride || filename;
       const candidateResponse = await fetch('/api/admin/candidates', {
         method: 'POST',
         headers: {
@@ -77,8 +86,8 @@ export default function UploadCandidates({ onCandidateAdded }: UploadCandidatesP
         },
         body: JSON.stringify({
           name: candidateName,
-          image: uploadData.url,
-          cloudinaryId: uploadData.cloudinaryId,
+          image: uploadData.secure_url,
+          cloudinaryId: uploadData.public_id,
           category,
         }),
       });
