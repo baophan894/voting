@@ -41,11 +41,31 @@ export default function UploadCandidates({ onCandidateAdded }: UploadCandidatesP
         body: formData,
       });
 
+      console.log('Upload response status:', uploadResponse.status);
+      console.log('Upload response headers:', Object.fromEntries(uploadResponse.headers.entries()));
+
+      // Get response text first to see what we're receiving
+      const responseText = await uploadResponse.text();
+      console.log('Upload response body (raw):', responseText);
+
       if (!uploadResponse.ok) {
-        throw new Error('Upload failed');
+        console.error('Upload failed with status:', uploadResponse.status);
+        console.error('Response body:', responseText);
+        throw new Error(`Upload failed: ${responseText.substring(0, 200)}`);
       }
 
-      const uploadData = await uploadResponse.json();
+      // Try to parse as JSON
+      let uploadData;
+      try {
+        uploadData = JSON.parse(responseText);
+      } catch (jsonError) {
+        console.error('Failed to parse JSON:', jsonError);
+        console.error('Response was:', responseText.substring(0, 500));
+        throw new Error('Server returned invalid JSON response');
+      }
+
+      console.log('Parsed upload data:', uploadData);
+
       const candidateName = nameOverride || uploadData.filename;
 
       // Create candidate
@@ -64,12 +84,14 @@ export default function UploadCandidates({ onCandidateAdded }: UploadCandidatesP
       });
 
       if (!candidateResponse.ok) {
+        const errorText = await candidateResponse.text();
+        console.error('Candidate creation failed:', errorText);
         throw new Error('Failed to create candidate');
       }
 
       return true;
     } catch (error) {
-      console.error('Error uploading:', error);
+      console.error('Error uploading file:', error);
       return false;
     }
   };
