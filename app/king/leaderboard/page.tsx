@@ -73,8 +73,8 @@ export default function KingLeaderboardPage() {
                 <p className="text-[10px] text-white/60">Year End Party 2026</p>
               </div>
             </Link>
-            
-            <button 
+
+            <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-[#FFB353]/10 transition-colors"
             >
@@ -117,14 +117,31 @@ export default function KingLeaderboardPage() {
       </header>
 
       {/* Hero Section */}
-      <section className={`pt-24 pb-6 px-4 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="max-w-4xl mx-auto text-center">
+      <section className={`pt-24 pb-6 px-4 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ overflow: 'visible' }}>
+        <div className="max-w-4xl mx-auto text-center" style={{ overflow: 'visible' }}>
           <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#FFB353] to-[#FF8C00] rounded-2xl shadow-lg mb-4">
             <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-[#1A3553]" />
           </div>
-          
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-3">
-            <span className="bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FFB353] bg-clip-text text-transparent drop-shadow-lg italic" style={{ fontFamily: "'Imperial Script', cursive", fontWeight: 700 }}>Leaderboard</span>
+
+          <h1 className="font-black leading-[1.08] pb-2 overflow-visible">
+            <span
+              className="
+                inline-block whitespace-nowrap italic drop-shadow-lg
+                text-6xl sm:text-7xl md:text-[9rem] lg:text-[11rem] xl:text-[14rem]
+                bg-gradient-to-r from-[#FFB353] via-[#FFC77D] to-[#FF8C00]
+                bg-clip-text text-transparent
+                px-[0.3em] -mx-[0.2em]
+              "
+              style={{
+                fontFamily: "'Imperial Script', cursive",
+                display: 'inline-block',
+                whiteSpace: 'nowrap',
+                paddingBottom: '0.12em',
+                lineHeight: 1.05,
+              }}
+            >
+              Leaderboard
+            </span>
           </h1>
           <p className="text-white/70 text-base sm:text-lg font-medium">King - Year End Party 2026</p>
           <Crown className="w-10 h-10 sm:w-12 sm:h-12 text-[#FFB353] mx-auto mt-4" />
@@ -133,33 +150,43 @@ export default function KingLeaderboardPage() {
 
       {/* Top 3 Section */}
       {topThree.length >= 3 && (
-        <section className={`max-w-5xl mx-auto px-2 sm:px-4 mb-8 transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <section
+          className={`max-w-5xl mx-auto px-2 sm:px-4 mb-8 transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+        >
           <div className="flex items-end justify-center gap-2 sm:gap-4 md:gap-6">
             {/* 2nd Place */}
             <div className="flex flex-col items-center w-[30%] max-w-[140px] sm:max-w-[160px] md:max-w-[180px]">
               <div className="relative w-full">
                 {/* Card */}
                 <div className="relative aspect-[3/4] w-full rounded-xl sm:rounded-2xl overflow-hidden border-2 sm:border-4 border-gray-400/50 shadow-xl bg-[#132842]">
-                  <Image 
-                    src={topThree[1]?.image || '/placeholder.svg'} 
-                    alt={topThree[1]?.name || ''} 
-                    fill 
-                    className="object-cover" 
+                  <Image
+                    src={topThree[1]?.image || '/placeholder.svg'}
+                    alt={topThree[1]?.name || ''}
+                    fill
+                    className="object-cover"
                   />
                   {/* Rank Badge */}
                   <div className="absolute top-1 left-1 sm:top-2 sm:left-2 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-gray-300 to-gray-500 rounded-lg flex items-center justify-center text-gray-900 font-bold text-xs sm:text-sm shadow-lg">
                     #2
                   </div>
                   {/* Name overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 sm:p-3">
-                    <p className="text-white font-bold text-xs sm:text-sm break-words line-clamp-2">{topThree[1]?.name}</p>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 sm:p-3 text-center">
+                    <p className="mx-auto max-w-[90%] text-white font-bold text-xs sm:text-sm break-words line-clamp-2 text-center">
+                      {topThree[1]?.name}
+                    </p>
                   </div>
                 </div>
               </div>
+
               {/* Votes */}
               <div className="mt-2 sm:mt-3 text-center">
-                <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">{topThree[1]?.votes?.toLocaleString()}</p>
-                <p className="text-[10px] sm:text-xs text-white/50 uppercase tracking-wider">Lượt bình chọn</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+                  {topThree[1]?.votes?.toLocaleString()}
+                </p>
+                <p className="text-[10px] sm:text-xs text-white/50 uppercase tracking-wider">
+                  Lượt bình chọn
+                </p>
               </div>
             </div>
 
@@ -168,28 +195,37 @@ export default function KingLeaderboardPage() {
               <div className="relative w-full">
                 {/* Card */}
                 <div className="relative aspect-[3/4] w-full rounded-xl sm:rounded-2xl overflow-hidden border-2 sm:border-4 border-[#FFB353] shadow-2xl bg-[#132842]">
-                  <Image 
-                    src={topThree[0]?.image || '/placeholder.svg'} 
-                    alt={topThree[0]?.name || ''} 
-                    fill 
-                    className="object-cover" 
+                  <Image
+                    src={topThree[0]?.image || '/placeholder.svg'}
+                    alt={topThree[0]?.name || ''}
+                    fill
+                    className="object-cover"
                   />
                   {/* Name & Winner Badge */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-2 sm:p-4">
-                    <p className="text-white font-bold text-xs sm:text-sm md:text-base break-words line-clamp-2">{topThree[0]?.name}</p>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-2 sm:p-4 text-center">
+                    <p className="mx-auto max-w-[90%] text-white font-bold text-xs sm:text-sm md:text-base break-words line-clamp-2 text-center">
+                      {topThree[0]?.name}
+                    </p>
                     <div className="flex items-center justify-center mt-1">
-                      <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-[#FFB353] to-[#FF8C00] rounded-full text-[10px] sm:text-xs font-bold text-[#1A3553]">WINNER</span>
+                      <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-[#FFB353] to-[#FF8C00] rounded-full text-[10px] sm:text-xs font-bold text-[#1A3553]">
+                        WINNER
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
+
               {/* Votes */}
               <div className="mt-2 sm:mt-3 text-center">
                 <div className="flex items-center justify-center gap-1 sm:gap-2">
                   <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-[#FFB353]" />
-                  <p className="text-xl sm:text-2xl md:text-3xl font-bold text-[#FFB353]">{topThree[0]?.votes?.toLocaleString()}</p>
+                  <p className="text-xl sm:text-2xl md:text-3xl font-bold text-[#FFB353]">
+                    {topThree[0]?.votes?.toLocaleString()}
+                  </p>
                 </div>
-                <p className="text-[10px] sm:text-xs text-white/50 uppercase tracking-wider">Lượt bình chọn</p>
+                <p className="text-[10px] sm:text-xs text-white/50 uppercase tracking-wider">
+                  Lượt bình chọn
+                </p>
               </div>
             </div>
 
@@ -198,31 +234,39 @@ export default function KingLeaderboardPage() {
               <div className="relative w-full">
                 {/* Card */}
                 <div className="relative aspect-[3/4] w-full rounded-xl sm:rounded-2xl overflow-hidden border-2 sm:border-4 border-amber-600/50 shadow-xl bg-[#132842]">
-                  <Image 
-                    src={topThree[2]?.image || '/placeholder.svg'} 
-                    alt={topThree[2]?.name || ''} 
-                    fill 
-                    className="object-cover" 
+                  <Image
+                    src={topThree[2]?.image || '/placeholder.svg'}
+                    alt={topThree[2]?.name || ''}
+                    fill
+                    className="object-cover"
                   />
                   {/* Rank Badge */}
                   <div className="absolute top-1 left-1 sm:top-2 sm:left-2 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-amber-500 to-amber-700 rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-lg">
                     #3
                   </div>
                   {/* Name overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 sm:p-3">
-                    <p className="text-white font-bold text-xs sm:text-sm break-words line-clamp-2">{topThree[2]?.name}</p>
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-2 sm:p-3 text-center">
+                    <p className="mx-auto max-w-[90%] text-white font-bold text-xs sm:text-sm break-words line-clamp-2 text-center">
+                      {topThree[2]?.name}
+                    </p>
                   </div>
                 </div>
               </div>
+
               {/* Votes */}
               <div className="mt-2 sm:mt-3 text-center">
-                <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">{topThree[2]?.votes?.toLocaleString()}</p>
-                <p className="text-[10px] sm:text-xs text-white/50 uppercase tracking-wider">Lượt bình chọn</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+                  {topThree[2]?.votes?.toLocaleString()}
+                </p>
+                <p className="text-[10px] sm:text-xs text-white/50 uppercase tracking-wider">
+                  Lượt bình chọn
+                </p>
               </div>
             </div>
           </div>
         </section>
       )}
+
 
       {/* Rest of Rankings */}
       {rest.length > 0 && (
@@ -231,9 +275,8 @@ export default function KingLeaderboardPage() {
             {rest.map((candidate, index) => (
               <div
                 key={candidate._id}
-                className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-300 ${
-                  index % 2 === 0 ? 'bg-[#132842]' : 'bg-[#1A3553]/50'
-                } hover:bg-[#1e3a5f]`}
+                className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-300 ${index % 2 === 0 ? 'bg-[#132842]' : 'bg-[#1A3553]/50'
+                  } hover:bg-[#1e3a5f]`}
               >
                 <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#1A3553] rounded-full flex items-center justify-center font-bold text-white/60 text-xs sm:text-sm border border-[#FFB353]/20">
                   #{index + 4}
